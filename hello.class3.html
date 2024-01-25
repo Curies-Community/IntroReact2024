@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+
+      function Counter({}) {
+        const [count, setCount] = React.useState(0);
+
+        return (
+          <div>
+            <p>Has hecho click {count} veces</p>
+            <button onClick={() => setCount((c) => c + 1)}> +1 </button>
+            <button onClick={() => setCount((c) => c - 1)}> -1 </button>
+            {count < 10 ? (
+              <>
+                <button onClick={() => setCount(0)}>Reset</button>
+                <button onClick={() => setCount(100)}>To 100</button>
+              </>
+            ) : null}
+          </div>
+        );
+      }
+
+      root.render(
+        <>
+          <Counter />
+        </>
+      );
+    </script>
+  </body>
+</html>
