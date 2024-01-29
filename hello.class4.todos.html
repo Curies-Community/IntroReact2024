@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const container = document.getElementById("root");
+      const root = ReactDOM.createRoot(container);
+
+      function ToDos() {
+        return (
+          <div>
+            <h1>My ToDos</h1>
+            <input type="text" value={text} onChange={handleText} />
+            <button onClick={handleAdd}>Add</button>
+            <ul>
+              {todos.map((todo) => (
+                <li key={todo}>{todo}</li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
+
+      function Card({ children }) {
+        return (
+          <div
+            style={{
+              border: "1px solid black",
+              borderRadius: "4px",
+              padding: "12px",
+              backgroundColor: "white",
+            }}
+          >
+            {children}
+          </div>
+        );
+      }
+
+      function App() {
+        return (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+              backgroundColor: "lightblue",
+            }}
+          >
+            <Card>
+              <ToDos />
+            </Card>
+          </div>
+        );
+      }
+
+      root.render(<App />);
+    </script>
+  </body>
+</html>
