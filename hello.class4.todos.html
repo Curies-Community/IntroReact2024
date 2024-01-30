@@ -22,15 +22,82 @@
       const container = document.getElementById("root");
       const root = ReactDOM.createRoot(container);
 
+      function Todo({ title, id, completed, onChange }) {
+        return (
+          <div
+            key={id}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              textDecoration: completed ? "line-through" : "none",
+            }}
+          >
+            <li>{title}</li>
+            <input type="checkbox" checked={completed} onChange={onChange} />
+          </div>
+        );
+      }
+
       function ToDos() {
+        const [todos, setTodos] = React.useState([]);
+
+        function createNewTodo(title) {
+          if (!title) return;
+          const newTodo = {
+            id: Math.random().toString(),
+            title,
+            completed: false,
+          };
+
+          setTodos((currentTodos) => [newTodo, ...currentTodos]);
+        }
+
+        function handleCheck(event, todoId) {
+          const checked = event.target.checked;
+          setTodos((currentTodos) => {
+            const newTodos = [...currentTodos];
+            newTodos.find((t) => t.id === todoId).completed = checked;
+
+            const sortedTodos = [
+              ...newTodos.filter((t) => !t.completed),
+              ...newTodos.filter((t) => t.completed),
+            ];
+
+            return sortedTodos;
+          });
+        }
+
         return (
           <div>
-            <h1>My ToDos</h1>
-            <input type="text" value={text} onChange={handleText} />
-            <button onClick={handleAdd}>Add</button>
+            <h1>Tareas por hacer</h1>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const input = e.target.elements[0];
+                const tarea = input.value;
+                createNewTodo(tarea);
+                input.value = "";
+              }}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <input type="text" placeholder="Buscar tarea" />
+              <button>crear</button>
+            </form>
+
             <ul>
               {todos.map((todo) => (
-                <li key={todo}>{todo}</li>
+                <Todo
+                  key={todo.id}
+                  id={todo.id}
+                  title={todo.title}
+                  completed={todo.completed}
+                  onChange={(event) => handleCheck(event, todo.id)}
+                />
               ))}
             </ul>
           </div>
@@ -44,7 +111,13 @@
               border: "1px solid black",
               borderRadius: "4px",
               padding: "12px",
-              backgroundColor: "white",
+              backgroundColor: "#302244",
+              border: "5px solid transparent",
+              borderImage:
+                "linear-gradient(to bottom right, #b827fc 0%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%)",
+              borderImageSlice: 1,
+              margin: "20px auto",
+              color: "white",
             }}
           >
             {children}
@@ -64,6 +137,7 @@
             }}
           >
             <Card>
+              <ToDos />
               <ToDos />
             </Card>
           </div>
