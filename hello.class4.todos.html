@@ -39,6 +39,33 @@
         );
       }
 
+      function NewTodo({ onNewTodo }) {
+        const [newTodoTitle, setNewTodoTitle] = React.useState("");
+
+        return (
+          <form
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+            onSubmit={(event) => {
+              event.preventDefault();
+              onNewTodo(newTodoTitle);
+              setNewTodoTitle("");
+            }}
+          >
+            <input
+              type="text"
+              placeholder="Buscar tarea"
+              value={newTodoTitle}
+              onChange={(event) => setNewTodoTitle(event.target.value)}
+            />
+            <button disabled={newTodoTitle.length === 0}>crear</button>
+          </form>
+        );
+      }
+
       function ToDos() {
         const [todos, setTodos] = React.useState([]);
 
@@ -68,26 +95,12 @@
           });
         }
 
+        console.log("rendering");
+
         return (
           <div>
             <h1>Tareas por hacer</h1>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                const input = e.target.elements[0];
-                const tarea = input.value;
-                createNewTodo(tarea);
-                input.value = "";
-              }}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <input type="text" placeholder="Buscar tarea" />
-              <button>crear</button>
-            </form>
+            <NewTodo onNewTodo={createNewTodo} />
 
             <ul>
               {todos.map((todo) => (
@@ -137,7 +150,6 @@
             }}
           >
             <Card>
-              <ToDos />
               <ToDos />
             </Card>
           </div>
