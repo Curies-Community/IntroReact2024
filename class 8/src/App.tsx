@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { createBrowserRouter, RouterProvider, Link, useParams, useLoaderData, defer, Await } from "react-router-dom"
+import { createBrowserRouter, RouterProvider, Link, useParams, useLoaderData, defer, Await, Outlet } from "react-router-dom"
 import { Suspense } from "react"
 
 function Loading() {
@@ -15,9 +15,7 @@ function Song() {
   }
 
   return (
-    <section style={{ backgroundColor: "#6ee7b7", padding: "2rem", borderRadius: 6 }}>
-      <h1>Songs</h1>
-
+    <div style={{backgroundColor: "yellow"}}>
       <div>{params.song_id}</div>
       <Suspense fallback={<Loading />}>
         <Await resolve={albumPromise}>
@@ -27,9 +25,7 @@ function Song() {
           {artist => <div>Artist: {artist}</div>}
         </Await>
       </Suspense>
-
-    </section>
-
+    </div>
   )
 }
 
@@ -82,35 +78,35 @@ const router = createBrowserRouter([
             <Link to="/songs/mago">Costa del silencio</Link>
           </li>
         </ul>
+        <Outlet />
       </section>
     ),
+    children: [
+      {
+        path: ":song_id",
+        element: (<Song />),
+        loader: async () => {
+          const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+          async function getAlbum() {
+            await sleep(2000)
+            return "melody sheep"
+          }
+
+          async function getArtist() {
+            await sleep(4000)
+            return "pink floyd"
+          }
+
+          return defer({ albumPromise: getAlbum(), artistPromise: getArtist() })
+        },
+        errorElement: (
+          <span>cancion no encontrada</span>
+        )
+      },
+    ]
   },
-  {
-    path: "/songs/:song_id",
-    element: (<Song />),
-    loader: async () => {
-      const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-      async function getAlbum() {
-        await sleep(2000)
-        return "melody sheep"
-      }
-
-      async function getArtist() {
-        await sleep(4000)
-        return "pink floyd"
-      }
-
-      return defer({ albumPromise: getAlbum(), artistPromise: getArtist() })
-    },
-    errorElement: (
-      <section style={{ backgroundColor: "#6ee7b7", padding: "2rem", borderRadius: 6 }}>
-        <h1>Songs</h1>
-        cancion no encontrada
-      </section>
-    )
-  },
 ])
 
 function App() {
