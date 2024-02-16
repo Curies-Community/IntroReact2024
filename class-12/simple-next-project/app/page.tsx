@@ -16,6 +16,8 @@ function Index() {
       <p>Welcome to the simple Next.js project.</p>
       <Suspense fallback={<div>Loading...</div>}>
         <RandomComponentThatWait time={1000} />
+      </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
         <RandomComponentThatWait time={2000} />
       </Suspense>
     </main>

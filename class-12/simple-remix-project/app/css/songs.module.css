@@ -1,0 +1,38 @@
+.songContainer {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #ccc;
+  img {
+    max-width: 100px;
+  }
+  button {
+    all: unset;
+    font-size: 3rem;
+  }
+}
+
+.songMedia {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.songsContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.container {
+  font-family: system-ui, sans-serif;
+  background-color: #ffebbd;
+  padding: 2rem;
+  margin: 0;
+}
+
+.semiTransparent {
+  opacity: 40%;
+}
